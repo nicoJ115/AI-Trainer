@@ -5,7 +5,7 @@ import mediapipe as mp
 from ultralytics import YOLO\
 
 
-cap = cv.VideoCapture(r'Videos\6.mov')
+cap = cv.VideoCapture(r'Videos\5.mov')
 mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
@@ -22,7 +22,7 @@ while True:
     result = pose.process(frameRGB)
     # print(result.pose_landmarks)
     if result.pose_landmarks:
-        mpDraw.draw_landmarks(frame,result.pose_landmarks)
+        mpDraw.draw_landmarks(frame,result.pose_landmarks,mpPose.POSE_CONNECTIONS)
 
     font = cv.FONT_HERSHEY_SIMPLEX
     cv.putText(frame,  
