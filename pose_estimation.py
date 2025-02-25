@@ -1,11 +1,11 @@
 import numpy as np
 import cv2 as cv # type: ignore
 import time
-import mediapipe as mp
-from ultralytics import YOLO\
+import mediapipe as mp # type: ignore
+# from ultralytics import YOLO # type: ignore
 
 
-cap = cv.VideoCapture(r'Videos\6.mov')
+cap = cv.VideoCapture(r'Videos\5.mov')
 mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
@@ -34,7 +34,7 @@ while True:
                 cv.LINE_4)
     # Display the resulting frame 
     cv.imshow('video', frame) 
-    cv.waitKey(150)
+    cv.waitKey(1)
     k = cv.waitKey(1) 
     if k>=0:
             prev_key = last_key
@@ -58,8 +58,8 @@ print("OpenCV Version:", cv.__version__)
 print("MediaPipe is working!")
 
 # Test YOLO
-model = YOLO('yolov8n.pt')  # Load YOLOv8 Nano model
-print("YOLOv8 is working!")
+# model = YOLO('yolov8n.pt')  # Load YOLOv8 Nano model
+print("YOLOv8 is not working!")
 
 # release the cap object 
 cap.release() 
