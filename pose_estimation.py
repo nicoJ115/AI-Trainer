@@ -22,7 +22,7 @@ while True:
     result = pose.process(frameRGB)
     # print(result.pose_landmarks)
     if result.pose_landmarks:
-        mpDraw.draw_landmarks(frame,result.pose_landmarks)
+        mpDraw.draw_landmarks(frame,result.pose_landmarks,mpPose.POSE_CONNECTIONS)
 
     font = cv.FONT_HERSHEY_SIMPLEX
     cv.putText(frame,  
