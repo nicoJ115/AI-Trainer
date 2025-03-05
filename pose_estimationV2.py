@@ -93,7 +93,7 @@ class Pose_Detection():
 def main():
     print("This is the main function.")
 
-    cap = cv.VideoCapture(r'Videos\1.mov')
+    cap = cv.VideoCapture(r'Videos\8.mov')
     p_Time = 0 
     detector = Pose_Detection(upper_body_only = False)
     # print(detector.upper_body_only)
@@ -109,9 +109,9 @@ def main():
         # landmarks = detector.detect_landmark(frame,success,ids = [1,2,3])
         landmarks = detector.detect_landmark(frame,success)
         # print(landmarks[0])
-        x = int(landmarks[14,1])
-        y = int(landmarks[14,2])
-        cv.circle(frame, (x, y), 15, (0, 0, 255), cv.FILLED)
+        # x = int(landmarks[14,1])
+        # y = int(landmarks[14,2])
+        # cv.circle(frame, (x, y), 15, (0, 0, 255), cv.FILLED)
 
 
         # print(landmarks)
