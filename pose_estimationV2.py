@@ -93,7 +93,7 @@ class Pose_Detection():
 def main():
     print("This is the main function.")
 
-    cap = cv.VideoCapture(r'Videos\8.mov')
+    cap = cv.VideoCapture(r'Videos\Dead_lift1.mov')
     p_Time = 0 
     detector = Pose_Detection(upper_body_only = False)
     # print(detector.upper_body_only)
