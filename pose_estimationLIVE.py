@@ -93,19 +93,26 @@ class Pose_Detection():
 def main():
     print("This is the main function.")
 
-    cap = cv.VideoCapture(r'Videos\Bicep_Curl2.mov')
+    print("Starting webcam...")
+    cap = cv.VideoCapture(0)
+    if not cap.isOpened():
+        print("Error: Could not open webcam.")
+        return
+
+    # cap = cv.VideoCapture(r'Videos\Bicep_Curl2.mov')
     p_Time = 0 
     detector = Pose_Detection(upper_body_only = False)
-    # print(detector.upper_body_only)
-    # print()
     last_key = 'n'
     all_landmarks = []
+
+
     while True:
         success, frame = cap.read()
-        frame,success = detector.detect_person(frame,True)
         if not success or frame is None:
             print("Error: Failed to read frame or end of video reached.")
             break
+
+        frame,success = detector.detect_person(frame,True)
         # landmarks = detector.detect_landmark(frame,success,ids = [1,2,3])
         landmarks = detector.detect_landmark(frame,success)
         # print(landmarks[0])
@@ -133,15 +140,19 @@ def main():
         all_landmarks.append(landmarks)
 
         # Display the resulting frame 
-        cv.imshow('video', frame) 
-        
+        cv.imshow('Webcame', frame) 
+
+
         k = cv.waitKey(1) 
         if k>=0:
+                prev_key = last_key
                 last_key = chr(k)
 
         if last_key == 'q':
                 break
 
+    cap.release()
+    cv.destroyAllWindows()
 
     # print(landmarks)
 
