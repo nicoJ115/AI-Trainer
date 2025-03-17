@@ -10,7 +10,7 @@ from pose_estimationV2 import Pose_Detection as pm
 def main():
     print("This is the main function.")
 
-    cap = cv.VideoCapture(r'Videos\Bicep_Curl2.mov')
+    # cap = cv.VideoCapture(r'Videos\Bicep_Curl2.mov')
     # img = cv.imread(r'Photos\Bicep_Angle2.png')
     # img = cv.resize(img,(580,720))
     # cv.imshow("Img",img)
@@ -18,7 +18,7 @@ def main():
     detector = pm()
     last_key = 'n'
     while True:
-        img = cv.imread(r'Photos\Bicep_Angle2.png')
+        img = cv.imread(r'Photos\Bicep_Angle3.png')
         img = cv.resize(img,(580,720))
         img,suc = detector.detect_person(img)
         landmarks = detector.detect_landmark(img,suc,ids = [12,14,16])

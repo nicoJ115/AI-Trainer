@@ -113,13 +113,13 @@ def main():
     all_landmarks = []
     while True:
         success, frame = cap.read()
-        frame,success = detector.detect_person(frame,True)
+        frame,success = detector.detect_person(frame,False)
         if not success or frame is None:
             print("Error: Failed to read frame or end of video reached.")
             break
         # landmarks = detector.detect_landmark(frame,success,ids = [1,2,3])
         landmarks = detector.detect_landmark(frame,success,False)
-        print(landmarks[0])
+        # print(landmarks[0])
         # x = int(landmarks[14,1])
         # y = int(landmarks[14,2])
         # cv.circle(frame, (x, y), 15, (0, 0, 255), cv.FILLED)
