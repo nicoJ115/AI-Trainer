@@ -45,8 +45,9 @@ class Pose_Detection():
         result = self.pose.process(frameRGB)
         # print(result.pose_landmarks)
         if draw:
-            if result.pose_landmarks:
+             if result.pose_landmarks:
                 # self.mpDraw.draw_landmarks(frame,result.pose_landmarks,self.mpPose.POSE_CONNECTIONS)
+                # print(result.pose_landmarks)
                 self.mpDraw.draw_landmarks(
                                             frame,
                                             result.pose_landmarks,
@@ -68,24 +69,34 @@ class Pose_Detection():
                 row, col, color = img.shape
                 # Filter upper body landmarks if upper_body_only is True
                 cx, cy = int(lm.x*col),int(lm.y*row)
+
                 # landmarks.append([id,cx,cy, lm.visibility])
                 if ids:
                     # print("why")
                     if id in ids:
                         landmarks.append([id,cx,cy, lm.visibility])
+                        if draw:
+                            cv.circle(img, (cx, cy), 5, (0, 0, 255), cv.FILLED) 
                 elif self.upper_body_only:
                     if id < 25:  # Landmark IDs 0 to 22 generally represent the upper body
                         # print("Why",id)
                         landmarks.append([id,cx,cy, lm.visibility])
+                        if draw:
+                            cv.circle(img, (cx, cy), 5, (0, 0, 255), cv.FILLED) 
                 else:
                     # print("Why",id)
                     landmarks.append([id,cx,cy, lm.visibility])
-                if draw:
-                    # print('')
-                    # cv.circle(img, (cx, cy), 5, (0, 255, 0), cv.FILLED)
-                    pass
+                    if draw:
+                            cv.circle(img, (cx, cy), 5, (0, 0, 255), cv.FILLED) 
+                # if draw:
+                #     print('')
+                #     cv.circle(img, (cx, cy), 5, (0, 255, 0), cv.FILLED)
+                #     pass
             return np.array(landmarks)
         return np.array(landmarks)
+    
+    def BicepAngle():
+         pass 
         
 
 
@@ -96,8 +107,8 @@ def main():
     cap = cv.VideoCapture(r'Videos\Bicep_Curl2.mov')
     p_Time = 0 
     detector = Pose_Detection(upper_body_only = False)
-    # print(detector.upper_body_only)
-    # print()
+    print(detector.upper_body_only)
+    print()
     last_key = 'n'
     all_landmarks = []
     while True:
@@ -107,8 +118,8 @@ def main():
             print("Error: Failed to read frame or end of video reached.")
             break
         # landmarks = detector.detect_landmark(frame,success,ids = [1,2,3])
-        landmarks = detector.detect_landmark(frame,success)
-        # print(landmarks[0])
+        landmarks = detector.detect_landmark(frame,success,False)
+        print(landmarks[0])
         # x = int(landmarks[14,1])
         # y = int(landmarks[14,2])
         # cv.circle(frame, (x, y), 15, (0, 0, 255), cv.FILLED)
