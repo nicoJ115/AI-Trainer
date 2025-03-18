@@ -25,6 +25,7 @@ class Pose_Detection():
         # Initialize MediaPipe Pose and Drawing utilities
         self.mpPose = mp.solutions.pose
         self.mpDraw = mp.solutions.drawing_utils
+        self.landmarks = []
 
         # Create a Pose object with the provided parameters
         self.pose = self.mpPose.Pose(
@@ -61,7 +62,7 @@ class Pose_Detection():
 
     def detect_landmark(self,img,result,draw = True,ids = []):
         # print("hi")
-        landmarks = []
+        self.landmarks = []
         if result.pose_landmarks:
             for id, lm in enumerate(result.pose_landmarks.landmark):
                 # print('image shape',img.shape)
@@ -74,29 +75,45 @@ class Pose_Detection():
                 if ids:
                     # print("why")
                     if id in ids:
-                        landmarks.append([id,cx,cy, lm.visibility])
+                        self.landmarks.append([id,cx,cy, lm.visibility])
                         if draw:
                             cv.circle(img, (cx, cy), 5, (0, 0, 255), cv.FILLED) 
                 elif self.upper_body_only:
                     if id < 25:  # Landmark IDs 0 to 22 generally represent the upper body
                         # print("Why",id)
-                        landmarks.append([id,cx,cy, lm.visibility])
+                        self.landmarks.append([id,cx,cy, lm.visibility])
                         if draw:
                             cv.circle(img, (cx, cy), 5, (0, 0, 255), cv.FILLED) 
                 else:
                     # print("Why",id)
-                    landmarks.append([id,cx,cy, lm.visibility])
+                    self.landmarks.append([id,cx,cy, lm.visibility])
                     if draw:
                             cv.circle(img, (cx, cy), 5, (0, 0, 255), cv.FILLED) 
                 # if draw:
                 #     print('')
                 #     cv.circle(img, (cx, cy), 5, (0, 255, 0), cv.FILLED)
                 #     pass
-            return np.array(landmarks)
-        return np.array(landmarks)
+            return np.array(self.landmarks)
+        return np.array(self.landmarks)
     
-    def BicepAngle():
-         pass 
+    # Now need to get the calculation for this problem 
+    def findAngle(self,img,pos1,pos2,pos3,draw = True):
+         pos1_x, pos1_y,_ = pos1[1:]
+         pos1_x,pos1_y = int (pos1_x), int(pos1_y)
+         pos2_x, pos2_y,_ = pos2[1:]
+         pos2_x,pos2_y = int (pos2_x), int(pos2_y)
+         pos3_x, pos3_y,_ = pos3[1:]
+         pos3_x,pos3_y = int (pos3_x), int(pos3_y)
+         if draw:
+              cv.line(img, (pos1_x,pos1_y),(pos2_x,pos2_y),(0,255,0),2)
+              cv.line(img, (pos3_x,pos3_y),(pos2_x,pos2_y),(0,255,0),2)
+              cv.circle(img, (pos1_x, pos1_y), 10, (0, 0, 255), 2)
+              cv.circle(img, (pos1_x, pos1_y), 5, (0, 0, 255), cv.FILLED)
+              cv.circle(img, (pos2_x, pos2_y), 10, (0, 0, 255), 2)
+              cv.circle(img, (pos2_x, pos2_y), 5, (0, 0, 255), cv.FILLED)
+              cv.circle(img, (pos3_x, pos3_y), 10, (0, 0, 255), 2)
+              cv.circle(img, (pos3_x, pos3_y), 5, (0, 0, 255), cv.FILLED)
+         
         
 
 
