@@ -2,6 +2,7 @@ import numpy as np
 import cv2 as cv # type: ignore
 import time
 import mediapipe as mp # type: ignore
+import math
 # from ultralytics import YOLO # type: ignore
 
 class Pose_Detection():
@@ -97,6 +98,8 @@ class Pose_Detection():
         return np.array(self.landmarks)
     
     # Now need to get the calculation for this problem 
+    # I used this site to get the formaula for 3 points
+    # https://stackoverflow.com/questions/1211212/how-to-calculate-an-angle-from-three-points
     def findAngle(self,img,pos1,pos2,pos3,draw = True):
          pos1_x, pos1_y,_ = pos1[1:]
          pos1_x,pos1_y = int (pos1_x), int(pos1_y)
@@ -104,6 +107,30 @@ class Pose_Detection():
          pos2_x,pos2_y = int (pos2_x), int(pos2_y)
          pos3_x, pos3_y,_ = pos3[1:]
          pos3_x,pos3_y = int (pos3_x), int(pos3_y)
+
+         A = np.array([pos1_x - pos2_x, pos1_y - pos2_y])
+         B = np.array([pos3_x - pos2_x, pos3_y - pos2_y])
+
+         # Dot product and magnitudes
+         dot_product = np.dot(A, B)
+         magnitude_A = np.linalg.norm(A)
+         magnitude_B = np.linalg.norm(B)
+         magnitude_A = math.sqrt(A[0]**2 + A[1]**2)
+         magnitude_B = math.sqrt(B[0]**2 + B[1]**2)
+
+         # Compute angle in radians and convert to degrees
+         angle = math.degrees(math.acos(dot_product / (magnitude_A * magnitude_B)))
+
+         angle1 = math.atan2(pos1_y - pos2_y, pos1_x - pos2_x)  # Angle of vector pos2 → pos1
+         angle2 = math.atan2(pos3_y - pos2_y, pos3_x - pos2_x)  # Angle of vector pos2 → pos3
+
+         # Compute angle difference
+         tanAngle = math.degrees(angle2 - angle1)
+         tanAngle = abs(tanAngle)
+         if tanAngle > 180:
+            tanAngle = 360 - tanAngle
+
+
          if draw:
               cv.line(img, (pos1_x,pos1_y),(pos2_x,pos2_y),(0,255,0),2)
               cv.line(img, (pos3_x,pos3_y),(pos2_x,pos2_y),(0,255,0),2)
@@ -113,6 +140,10 @@ class Pose_Detection():
               cv.circle(img, (pos2_x, pos2_y), 5, (0, 0, 255), cv.FILLED)
               cv.circle(img, (pos3_x, pos3_y), 10, (0, 0, 255), 2)
               cv.circle(img, (pos3_x, pos3_y), 5, (0, 0, 255), cv.FILLED)
+              cv.putText(img, str(int(angle)), (pos2_x - 40, pos2_y - 20), 
+                   cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2, cv.LINE_AA)
+            #   cv.putText(img, str(int(tanAngle)), (pos2_x - 40, pos2_y - 20), 
+            #        cv.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 2, cv.LINE_AA)
          
         
 
