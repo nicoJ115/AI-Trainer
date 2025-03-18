@@ -6,7 +6,7 @@ from pose_estimationV2 import Pose_Detection as pm
 # from ultralytics import YOLO # type: ignore
 
 
-
+#print code 
 def main():
     print("This is the main function.")
 
