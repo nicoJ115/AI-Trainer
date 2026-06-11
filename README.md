@@ -8,7 +8,7 @@ A real-time human pose detection and landmark tracking system built with MediaPi
 
 ```
 ├── pose_estimationV2.py     # Core Pose_Detection class (reusable module)
-└── pose_estimationLIVE.py           # Main application entry point (webcam live feed)
+└── pose_estimation_Final_LIVE.py           # Main application entry point (webcam live feed)
 ```
 
 ---
@@ -45,7 +45,7 @@ pip install opencv-python mediapipe numpy
 ### Live Webcam
 
 ```bash
-python pose_estimationLIVE.py 
+python pose_estimation_Final_LIVE.py 
 ```
 
 Press **`q`** to quit.
